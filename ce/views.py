@@ -8,8 +8,13 @@ from django.utils import timezone
 
 #this page isn't in requirements but redirect to reviews
 def index(request):
-    return HttpResponse(" <!DOCTYPE html><html lang=\"en\">   <title>Choose Energy</title><a href=\"/reviews/\">Reviews</a></html>")
+    template = loader.get_template('ce/index.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
 
+    
+    
 # get all the suppliers and display them send the list to the html
 def reviews(request):
     supplier_list = Supplier.objects.all()
