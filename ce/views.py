@@ -6,10 +6,11 @@ from django.http import Http404
 from reviewform import ReviewForm
 from django.utils import timezone
 
+#this page isn't in requirements but redirect to reviews
 def index(request):
     return HttpResponse(" <!DOCTYPE html><html lang=\"en\">   <title>Choose Energy</title><a href=\"/reviews/\">Reviews</a></html>")
 
-# Create your views here.
+# get all the suppliers and display them send the list to the html
 def reviews(request):
     supplier_list = Supplier.objects.all()
     template = loader.get_template('ce/reviews.html')
@@ -25,6 +26,8 @@ def slug(request, slug):
         raise Http404
 
     mySupplier = Supplier.objects.get(supplierSlug=slug)
+
+    #display only published reviews, in order from most recent first 
     myReviews = Review.objects.filter(supplier=mySupplier, published=True).order_by('-timeSubmitted')   
 
     template = loader.get_template('ce/slug.html')
@@ -35,6 +38,7 @@ def slug(request, slug):
 
     
 def write(request, slug):
+    #grab supplier object from slug name
     mySupplier = Supplier.objects.get(supplierSlug=slug)
     
     if request.method == 'POST':
@@ -51,12 +55,12 @@ def write(request, slug):
 
 
         else:
-            #form = ReviewForm()
             template = loader.get_template('ce/write.html')
             context = RequestContext(request, { 'form':form, 'supplier':mySupplier
         })
             return HttpResponse(template.render(context))           
     else:
+        #get request, load up an empty form and pass it into html
         form = ReviewForm()
         template = loader.get_template('ce/write.html')
         context = RequestContext(request, { 'form':form, 'supplier':mySupplier
