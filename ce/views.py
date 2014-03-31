@@ -7,7 +7,7 @@ from reviewform import ReviewForm
 from django.utils import timezone
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+    return HttpResponse(" <!DOCTYPE html><html lang=\"en\">   <title>Choose Energy</title><a href=\"/reviews/\">Reviews</a></html>")
 
 # Create your views here.
 def reviews(request):
